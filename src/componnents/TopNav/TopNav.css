@@ -1,0 +1,43 @@
+.top-navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #333;
+    color: white;
+    padding: 10px 20px;
+  }
+  
+  .left {
+    flex: 1;
+  }
+  
+  .center {
+    flex: 2;
+    display: flex;
+    justify-content: center;
+  }
+  
+  .right {
+    flex: 1;
+    display: flex;
+    justify-content: flex-end;
+  }
+  
+  .website-name {
+    font-size: 24px;
+  }
+  
+  .search-bar {
+    padding: 8px;
+    border: none;
+    border-radius: 5px;
+    width: 70%;
+  }
+  
+  .routing-icon {
+    margin-left: 10px;
+    cursor: pointer;
+  }
+  
+
+  

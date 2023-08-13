@@ -1,10 +1,16 @@
 import logo from './logo.svg';
 import './App.css';
+import { Route, Routes } from 'react-router-dom';
+import { LandingPage } from './Pages/LandingPage/LandingPage';
+import { TopNav } from './componnents/TopNav/TopNav';
 
 function App() {
   return (
     <div className="App">
-   <h1>MCR 11</h1>
+   <TopNav/>
+  <Routes>
+    <Route path="/" element={<LandingPage/>}/>
+  </Routes>
     </div>
   );
 }
