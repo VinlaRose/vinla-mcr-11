@@ -1,11 +1,13 @@
 import { useContext, useState } from "react"
 import "./LandingPage.css"
 import { DataContext } from "../../context/context"
+import { useNavigate } from "react-router-dom";
 
 
 export const LandingPage = () => {
     const {state,dispatch} = useContext(DataContext);
     console.log(state);
+    const navigate = useNavigate()
     
     const genres = ['Action', 'Adventure', 'Sci-Fi', 'Drama', 'Biography', 'Crime', 'Fantasy','All'];
     const years = ['All', 2001, 1999, 1991, 2010, 1994, 2003, 1998, 1992, 1994];
@@ -109,6 +111,11 @@ const addToStarred = (id) => {
     dispatch({type:"STAR" , payload: updatedData})
 }
     
+const goToMovie = (id) => {
+    console.log("clicked")
+    console.log(id)
+    navigate(`/${id}`)
+} 
     return(
         <div>
             
@@ -227,10 +234,10 @@ const addToStarred = (id) => {
             state.filteredMovieData.map(item => (
                 <div className="movie-card">
       <img className="movie-image" src={item.imageURL} alt="" />
-      <h2 className="movie-title">{item.title}</h2>
+      <h2 onClick={() => goToMovie(item.id)} className="movie-title">{item.title}</h2>
       <p className="movie-summary">{item.summary}</p>
       <div className="button-container">
-        <button className="action-button" >
+        <button className="action-button" onClick={() => goToMovie(item.id)} >
           Add to Watchlist
         </button>
         {

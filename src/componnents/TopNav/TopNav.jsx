@@ -1,11 +1,13 @@
 import { useContext, useState } from "react";
 import "./TopNav.css";
 import { DataContext } from "../../context/context";
+import { useNavigate } from "react-router-dom";
 
 
 export const TopNav = () => {
     const [searchTerm, setSearchTerm] = useState('');
     const [searchResults, setSearchResults] = useState([]);
+    const navigate = useNavigate()
   const{state, dispatch} = useContext(DataContext)
     const handleSearch = (e) => {
       const term = e.target.value.toLowerCase();
@@ -40,7 +42,7 @@ export const TopNav = () => {
       <div className="right">
         <span className="routing-icon">Movies</span>
         <span className="routing-icon">Watchlist</span>
-        <span className="routing-icon">Starred</span>
+        <span className="routing-icon" onClick={() => navigate("/starmovies")}>Starred</span>
       </div>
     </div>
     )
