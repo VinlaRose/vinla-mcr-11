@@ -7,7 +7,15 @@ export const MovieCard = () => {
     const {state,dispatch} = useContext(DataContext)
     const {movieId} = useParams();
     const movie = state.movieData.find(item => item.id == movieId);
-    console.log(movie)
+    console.log(movie);
+    const addToStar = (id) => {
+        console.log(id);
+        const updatedData = state.movieData.map(item =>
+            item.id === id ? { ...item, star: true } : item
+          );
+          console.log(updatedData)
+        dispatch({type:"STAR" , payload: updatedData})
+    }
   return (
     <div>
         Movie Card: {movieId}
@@ -24,8 +32,23 @@ export const MovieCard = () => {
         <p>Writer: {movie.writer}</p>
         <p>Cast: {movie.cast.join(', ')}</p>
         <p>{movie.summary}</p>
+        <div className="button-container">
+        <button className="action-button" >
+          Add to Watchlist
+        </button>
+        {
+            movie.star ?  <button className="action-button" >
+        Starred
+          </button  > :  <button  onClick={() => addToStar(movie.id)} className="action-button"  >
+          Star
+        </button>
+        }
+       
       </div>
+      </div>
+     
     </div>
+    
     </div>
     
   );
