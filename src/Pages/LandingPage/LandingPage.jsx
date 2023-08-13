@@ -2,6 +2,8 @@ import { useContext, useState } from "react"
 import "./LandingPage.css"
 import { DataContext } from "../../context/context"
 import { useNavigate } from "react-router-dom";
+import { v4 as uuid } from "uuid";
+
 
 
 export const LandingPage = () => {
@@ -55,52 +57,93 @@ const openModal = () => {
   setIsModalOpen(true);
   console.log("clicked")
 };
-const [movieData, setMovieData] = useState({
-    title: '',
-    year: '',
-    genre: [],
-    rating: '',
-    director: '',
-    writer: '',
-    cast: [],
-    summary: '',
-    imageURL: '',
-  });
 
-  const handleInputChange = (event) => {
-    const { name, value } = event.target;
-    setMovieData((prevData) => ({
-      ...prevData,
-      [name]: value,
-    }));
+const onClose = () => {
+    setIsModalOpen(false)
+}
+
+const [title, setMovieName] = useState('');
+  const [director, setDirectorName] = useState('');
+  const [summary, setSummary] = useState('');
+  const [cast, setCast] = useState([]);
+  const [writer, setWriters] = useState('');
+  const [year, setYear] = useState('');
+  const [rating, setRating] = useState('');
+  const [genre, setGenres] = useState([]);
+  const [imageURL, setImageURL] = useState('');
+
+  const handleMovieNameChange = (e) => {
+    setMovieName(e.target.value);
   };
 
-  const handleGenreChange = (event) => {
-    const selectedOptions = Array.from(event.target.selectedOptions, (option) => option.value);
-    setMovieData((prevData) => ({
-      ...prevData,
-      genre: selectedOptions,
-    }));
+  const handleDirectorNameChange = (e) => {
+    setDirectorName(e.target.value);
   };
 
-  const handleCastChange = (event) => {
-    const { value } = event.target;
-    if (value.trim() !== '') {
-      setMovieData((prevData) => ({
-        ...prevData,
-        cast: [...prevData.cast, value],
-      }));
-    }
+  const handleSummaryChange = (e) => {
+    setSummary(e.target.value);
   };
 
-const closeModal = () => {
-  setIsModalOpen(false);
-};
+  const handleCastChange = (e) => {
+    const newCast = e.target.value.split(',');
+    setCast(newCast);
+  };
 
-const handleModalSubmit = (movieData) => {
-    
-  console.log('Submitted movie data:', movieData);
-};
+  const handleWritersChange = (e) => {
+    setWriters(e.target.value);
+  };
+
+  const handleYearChange = (e) => {
+    setYear(e.target.value);
+  };
+
+  const handleRatingChange = (e) => {
+    setRating(e.target.value);
+  };
+
+  const handleGenreChange = (e) => {
+    const selectedGenres = Array.from(e.target.selectedOptions, (option) => option.value);
+    setGenres(selectedGenres);
+  };
+
+  const handleImageURLChange = (e) => {
+    setImageURL(e.target.value);
+  };
+
+  const handleSubmit = () => {
+    const movieData = {
+        id : uuid(),
+      title,
+      director,
+      summary,
+      cast,
+      writer,
+      year,
+      rating,
+      genre,
+      imageURL,
+      star: false,
+    };
+
+    console.log(movieData);
+    const updatedList = [...state.movieData, movieData];
+    console.log(updatedList)
+dispatch({type: "ADD" , payload: updatedList})
+   
+    setMovieName('');
+    setDirectorName('');
+    setSummary('');
+    setCast([]);
+    setWriters('');
+    setYear('');
+    setRating('');
+    setGenres([]);
+    setImageURL('');
+
+    onClose();
+  };
+
+
 
 const addToStarred = (id) => {
     console.log(id);
@@ -162,65 +205,77 @@ const goToMovie = (id) => {
                 </div>
                 
                 <button onClick={openModal}>Add New Movie</button>
-      {isModalOpen && (
-        <div className="modal">
-        <div className="modal-content">
-          <span className="close" onClick={closeModal}>
-            &times;
-          </span>
-          <h2>Add New Movie</h2>
-          <label>Title:</label>
-          <input type="text" name="title" value={movieData.title} onChange={handleInputChange} />
-  
-          <label>Year:</label>
-          <input type="number" name="year" value={movieData.year} onChange={handleInputChange} />
-  
-          <label>Genre:</label>
-          <select multiple name="genre" value={movieData.genre} onChange={handleGenreChange}>
-            <option value="Action">Action</option>
-            <option value="Adventure">Adventure</option>
-            <option value="Drama">Drama</option>
-            {/* Add more genre options here */}
-          </select>
-  
-          <label>Rating:</label>
-          <select name="rating" value={movieData.rating} onChange={handleInputChange}>
+                {
+                    isModalOpen && (
+                        <div>
+                             <div className="modal-overlay">
+      <div className="modal">
+        <h2>Add a Movie</h2>
+        <label>
+          Movie Name:
+          <input type="text" value={title} onChange={handleMovieNameChange} />
+        </label>
+        <label>
+          Director Name:
+          <input type="text" value={director} onChange={handleDirectorNameChange} />
+        </label>
+        <label>
+          Summary:
+          <textarea value={summary} onChange={handleSummaryChange}></textarea>
+        </label>
+        <label>
+          Cast (Separate by commas):
+          <input type="text" value={cast.join(',')} onChange={handleCastChange} />
+        </label>
+        <label>
+          Writers:
+          <input type="text" value={writer} onChange={handleWritersChange} />
+        </label>
+        <label>
+          Year:
+          <input type="text" value={year} onChange={handleYearChange} />
+        </label>
+        <label>
+          Rating:
+          <select value={rating} onChange={handleRatingChange}>
             <option value="">Select Rating</option>
-            {Array.from({ length: 10 }, (_, index) => (
-              <option key={index + 1} value={index + 1}>
-                {index + 1}
+            {Array.from({ length: 10 }, (_, i) => i + 1).map((value) => (
+              <option key={value} value={value}>
+                {value}
               </option>
             ))}
           </select>
-  
-          <label>Director:</label>
-          <input type="text" name="director" value={movieData.director} onChange={handleInputChange} />
-  
-          <label>Writer:</label>
-          <input type="text" name="writer" value={movieData.writer} onChange={handleInputChange} />
-  
-          <label>Cast:</label>
-          <input
-            type="text"
-            placeholder="Add cast member..."
-            onChange={handleCastChange}
-          />
-          <ul>
-            {movieData.cast.map((castMember, index) => (
-              <li key={index}>{castMember}</li>
-            ))}
-          </ul>
-  
-          <label>Summary:</label>
-          <textarea name="summary" value={movieData.summary} onChange={handleInputChange} />
-  
-          <label>Image URL:</label>
-          <input type="text" name="imageURL" value={movieData.imageURL} onChange={handleInputChange} />
-  
-          <button className="submit-button" onClick={handleModalSubmit}>Submit</button>
+        </label>
+        <label>
+          Genre:
+          <select multiple={true} value={genre} onChange={handleGenreChange}>
+            <option value="Action">Action</option>
+            <option value="Adventure">Adventure</option>
+            <option value="Sci-Fi">Sci-Fi</option>
+            <option value="Drama">Drama</option>
+            <option value="Biography">Biography</option>
+            <option value="Crime">Crime</option>
+            <option value="Fantasy">Fantasy</option>
+          </select>
+        </label>
+        <label>
+          Image URL:
+          <input type="text" value={imageURL} onChange={handleImageURLChange} />
+        </label>
+        <div className="modal-buttons">
+          <button className="close-button" onClick={onClose}>Close</button>
+          <button className="submit-button" onClick={handleSubmit}>Submit</button>
         </div>
       </div>
-      )}
+    </div>
+                        </div>
+                    )
+                }
+                
+                
+                
+                
+     
               
             
                 

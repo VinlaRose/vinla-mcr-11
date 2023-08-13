@@ -68,6 +68,13 @@ export const reducer = (state, action) => {
             filteredMovieData: action.payload,
 
           };
+          case "ADD":
+          return {
+            ...state,
+            movieData: action.payload,
+            filteredMovieData: action.payload,
+
+          };
         
       default:
         return state;
