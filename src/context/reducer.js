@@ -21,7 +21,7 @@ export const reducer = (state, action) => {
                 return{
                     ...state,
                     yearFilter: action.payload,
-                    filteredMovieData: action.payload === "All" ? state.movieData : state.filteredMovieData.filter((item) =>
+                    filteredMovieData: action.payload === "All" ? state.movieData : state.movieData.filter((item) =>
                     item.year == action.payload
                   )
     
@@ -31,7 +31,7 @@ export const reducer = (state, action) => {
                     return{
                         ...state,
                         ratingFilter: action.payload,
-                        filteredMovieData: action.payload === "All" ? state.movieData : state.filteredMovieData.filter((item) =>
+                        filteredMovieData: action.payload === "All" ? state.movieData : state.movieData.filter((item) =>
                         item.rating == action.payload
                       )
         
